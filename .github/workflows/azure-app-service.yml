@@ -13,8 +13,8 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    # Obligatorio si guardaste los secrets en Settings → Environments (y no en "Repository secrets").
-    # El nombre DEBE coincidir con el environment en GitHub (ej. "production"). Si el tuyo tiene otro nombre, cámbialo aquí.
+    # Si `AZURE_WEBAPP_PUBLISH_PROFILE` y `AZURE_WEBAPP_NAME` están en Settings → Environments,
+    # el nombre aquí debe coincidir (ej. production). Si los pusiste en Repository secrets, comenta esta línea.
     environment: production
 
     steps:
@@ -39,15 +39,11 @@ jobs:
           cp package.json package-lock.json deploy/
           cp -r dist deploy/dist
 
-      # Credenciales vía Service Principal (recomendado en CI). Evita depender del XML del publish profile.
-      - name: Azure Login
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
+      # Publish profile (XML completo del .PublishSettings). No uses azure/login con esto.
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: deploy
 
