@@ -1,5 +1,4 @@
 import express from "express";
-import "reflect-metadata";
 import { authRouter } from "./modules/auth/auth.router";
 import { marketRouter } from "./modules/market/market.router";
 import { storageRouter } from "./modules/storage/storage.router";
