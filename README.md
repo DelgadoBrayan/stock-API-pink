@@ -102,6 +102,12 @@ La API está desplegada en **Azure App Service** con las siguientes configuracio
 
 ---
 
+## URL pública
+
+La API está disponible en:
+
+**https://stock-api-service-bd-gvhmhmecbghefrcg.canadacentral-01.azurewebsites.net**
+
 ## Estructura del proyecto
 
 ```
