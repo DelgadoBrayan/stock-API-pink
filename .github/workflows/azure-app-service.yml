@@ -38,6 +38,7 @@ jobs:
           mkdir -p deploy
           cp package.json package-lock.json deploy/
           cp -r dist deploy/dist
+          cd deploy && npm ci --omit=dev
 
       # Publish profile (XML completo del .PublishSettings). No uses azure/login con esto.
       - name: Deploy to Azure Web App
