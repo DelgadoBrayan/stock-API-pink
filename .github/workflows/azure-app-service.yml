@@ -13,8 +13,6 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    # Si `AZURE_WEBAPP_PUBLISH_PROFILE` y `AZURE_WEBAPP_NAME` están en Settings → Environments,
-    # el nombre aquí debe coincidir (ej. production). Si los pusiste en Repository secrets, comenta esta línea.
     environment: production
 
     steps:
@@ -40,11 +38,14 @@ jobs:
           cp -r dist deploy/dist
           cd deploy && npm ci --omit=dev
 
-      # Publish profile (XML completo del .PublishSettings). No uses azure/login con esto.
+      - name: Zip deploy folder
+        run: |
+          cd deploy
+          zip -r ../deploy.zip . --exclude "*.git*"
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: deploy
-
+          package: deploy.zip
