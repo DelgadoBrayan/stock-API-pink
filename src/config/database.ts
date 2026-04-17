@@ -18,6 +18,7 @@ export const AppDataSource = new DataSource(
         database: env.DB_NAME,
         entities: [UserEntity, QuoteCacheEntity],
         synchronize: env.DB_SYNC ?? false,
+        ssl: { rejectUnauthorized: false },
       }
     : {
         type: "sqlite",
